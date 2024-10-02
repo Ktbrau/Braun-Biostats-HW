@@ -1,0 +1,12 @@
+---
+title: "HW 14"
+format: html
+---
+
+Setup
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
