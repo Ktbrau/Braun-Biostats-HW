@@ -1,0 +1,117 @@
+---
+title: "Homework 15"
+format: html
+---
+
+In this homework I will be working on using and understanding different R functions.
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+```
+
+Import the data set
+```{r}
+compensation <- read.csv(here("data", "compensation.csv"))
+```
+
+1) `summary()` function gives us the mediun, mean, interquartile range, min, and max for all the numerical variables.
+```{r}
+summary(compensation)
+```
+
+2) `select()` allows you to choose specific columns
+```{r}
+select(compensation, Fruit) # select fruit column
+select(compensation, -Root) #select all but root column
+
+```
+
+
+3) `slice()` allows you to choose specific rows
+```{r}
+slice(compensation, 2) # selects the first two rows
+slice(compensation, 2:10) # selects the second to the tenth row
+slice(compensation, c(2,3,10)) #selects specific rows
+```
+
+
+4) `filter()` allows you to select subsets of rows that are conditioned by a column
+```{r}
+filter(compensation, Fruit > 80) #selects all fruits that are greater than 80
+filter(compensation, Fruit >80 | Fruit <20) #selects fruit that is greater than 80 and smaller than 20
+lo_hi_fruit <- filter(compensation, Fruit > 80 | Fruit < 20)
+```
+
+5) `arrange()` sorts rows based on an input
+```{r}
+arrange(compensation, Fruit) #sorts the data frame by increasing fruit production
+```
+
+
+6) `mutate()` creates a new variable in the data frame
+```{r}
+compensation <- mutate(compensation, logFruit = log(Fruit)) #adds a new column called logfruit
+
+head(compensation)
+```
+
+
+Logical operators
+- `==` equals
+- `!=` does not equal
+- `<` less than
+- `>` greater than
+- `>=` greater than or equal to
+- `<=` less than or equal to
+- `|` or
+- `&` and
+
+You can use two functions at the same time
+```{r}
+select(filter(compensation, Fruit >80), Root)
+```
+
+Piping allows you to put one function inside another (always begin with the data frame)
+```{r}
+compensation %>%
+  filter(Fruit > 80) %>%
+  select(Root)
+```
+
+7) `group_by()` tells the data set to group its contents by splitting it into groups decided by another variable
+```{r}
+mean.fruit <- summarise(
+  group_by(compensation, Grazing),
+  meanFruit = mean(Fruit)
+)
+```
+
+8) `mean()` finds the average for numerical data
+```{r}
+compensation %>% 
+  group_by(Grazing) %>%
+summarise(meanFruit = mean(Fruit))
+```
+
+9) `sd()` takes the standard deviation of a column of numerical data
+```{r}
+compensation %>%
+  group_by(Grazing) %>%
+  summarise(
+    meanFruit = mean(Fruit),
+    sdFruit = sd(Fruit)
+```
+
+10) `with()` looks in a data frame, does what its told to, then stops looking in the data frame.
+```{r}
+with(compensation, Fruit > 80)
+```
+
+
+
+
+
+
+
