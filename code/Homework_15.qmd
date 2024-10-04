@@ -70,14 +70,15 @@ Logical operators
 
 You can use two functions at the same time
 ```{r}
-select(filter(compensation, Fruit >80), Root)
+select(filter(compensation, Fruit >80), Root) # shows the roots of the fruits that are greater than 80
 ```
 
 Piping allows you to put one function inside another (always begin with the data frame)
 ```{r}
-compensation %>%
+compensation %>% 
   filter(Fruit > 80) %>%
   select(Root)
+# does the same task as above but we use piping to achieve it
 ```
 
 7) `group_by()` tells the data set to group its contents by splitting it into groups decided by another variable
@@ -86,6 +87,7 @@ mean.fruit <- summarise(
   group_by(compensation, Grazing),
   meanFruit = mean(Fruit)
 )
+# shows the average fruit for each group (grazed/ungrazed)
 ```
 
 8) `mean()` finds the average for numerical data
@@ -93,6 +95,7 @@ mean.fruit <- summarise(
 compensation %>% 
   group_by(Grazing) %>%
 summarise(meanFruit = mean(Fruit))
+# does the same thing as above but uses piping
 ```
 
 9) `sd()` takes the standard deviation of a column of numerical data
@@ -101,7 +104,8 @@ compensation %>%
   group_by(Grazing) %>%
   summarise(
     meanFruit = mean(Fruit),
-    sdFruit = sd(Fruit)
+    sdFruit = sd(Fruit))
+# shows the mean and sd of the fruits based on grazed or ungrazed
 ```
 
 10) `with()` looks in a data frame, does what its told to, then stops looking in the data frame.
