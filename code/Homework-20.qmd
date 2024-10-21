@@ -1,0 +1,79 @@
+---
+title: "Biostats - Homework 20"
+format: html
+editor: visual
+---
+
+### Introduction
+
+The objective of this assignment is to have you continue practicing the skills you have learned in Chapters 3 and 4 of Getting Started with R and reinforce the ideas we discussed in class regarding the Weissgerber et al. paper. Please complete all of the following steps:
+
+1.  Write the code to set up your workspace.
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
+2.  Read in the dataset called soil_data.csv and name it "soil."
+
+```{r}
+soil <- read.csv(here("data", "soil_data.csv"))
+```
+
+3.  Create a histogram for the SOM_percent column in the dataframe. Accept the default number of bins.
+
+```{r}
+ggplot(soil, aes(SOM_percent)) +
+  geom_histogram()
+```
+
+How would you describe the mean_SOM data based on viewing the histogram? Write your answer below:
+
+#I would describe it as being heavily right skewed.
+
+4.  Create a new dataframe called SOM by calculating for each forest the mean soil organic matter and the standard deviation of soil organic matter. Make sure to name variables you create "mean_SOM" and "sd_SOM" so that the next code chunk I give you works.
+
+```{r}
+SOM <- soil |> group_by(Forest) |> 
+  summarize(mean_SOM = mean(SOM_percent), sd_SOM = sd(SOM_percent))
+```
+
+5.  Now run the following code chunk which will create a bar plot of mean soil organic matter per forest, with standard deviation as error bars.
+
+```{r}
+ggplot(SOM, aes(Forest, mean_SOM))+
+  geom_errorbar(aes(ymax = mean_SOM + sd_SOM, ymin = mean_SOM - sd_SOM), width = 0.2)+
+  geom_col(fill = "white", color = "black")+
+  ylab("Mean percent soil organic matter")+
+  xlab("Forest name")
+```
+
+Based on what you see in the bar chart, how would you describe the pattern of SOM between the 4 different forests? Write your answer here:
+
+#The forests with the highest means also have the largest standard deviations.
+
+Now create a boxplot of the SOM_percent data. Use Forest as the x-axis variable and overlay the point data on top of the boxplot. Make the points blue and somewhat transparent. Call the x-axis "Forest name" and the y-axis "Percent soil organic matter" (hint: See homework 18...).
+
+```{r}
+ggplot(soil, aes(y = SOM_percent, x = Forest)) +
+  geom_boxplot() +
+  geom_point(color = "blue", alpha = .6) +
+  xlab("Forest name") +
+  ylab("Percent soil organic matter")
+```
+
+Based on what you see in the box plot, write out your answers the following questions:
+
+-   how would you describe the pattern of SOM between the 4 different forests?
+
+#Donnerville forest has an extreme outlier. Degrasse and South Hammond have very small standard deviations. Kip Tract has a lot of outliers that make the standard deviation so big.
+
+-   What do you notice that is different from how the data were displayed in the bar plot?
+
+#We are able to see each individual data point which shows us if there are any outliers for each forest and the spread of the data points.
+
+-   Which plot type is more informative? Explain your answer.
+
+#Boxplot is a much more informative plot because it allows the reader to see where each data point is located compared to the mean. It also allows for the identification of any outliers.
