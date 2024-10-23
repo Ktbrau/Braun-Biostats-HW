@@ -1,0 +1,107 @@
+---
+title: "Homework-21"
+format: html
+editor: visual
+---
+
+Trying a chi-square contingency analysis:
+```{r}
+rm(list = ls())
+# clear the environment
+
+library(tidyverse)
+library(here)
+# import packages
+
+lady <- read.csv(here("data", "ladybirds.csv"))
+# import the data
+
+glimpse(lady)
+# look at the data
+```
+
+convert character variables to factors
+```{r}
+lady$Habitat <- as.factor(lady$Habitat)
+lady$Site <- as.factor(lady$Site)
+lady$colour <- as.factor(lady$colour)
+```
+
+Calculate total number of ladybirds based on color and habitat
+```{r}
+totals <- lady |>
+  group_by(Habitat, colour) |>
+  summarise(total_number = sum(number))
+# group the totals by their habitat and color
+```
+
+create a bar chart using the totals
+```{r}
+ggplot(totals, aes(x = Habitat, y = total_number, fill = colour)) +
+  geom_bar(stat = 'identity', position = 'dodge')
+# creates a bar graph that has a column for both colors within both industry. columns are color-coded based on color of ladybirds
+```
+
+Recreate the above graph with better colors
+```{r}
+ggplot(totals, aes(x = Habitat, y = total_number,
+fill = colour)) +
+geom_bar(stat = 'identity', position = 'dodge') +
+scale_fill_manual(values = c(black = "black", red = "red"))
+# change black color to black and red color to red
+```
+
+Turn the columns into a matrix with color and habitat
+```{r}
+lady_mat <- xtabs(number ~ Habitat + colour,
+data = lady) 
+# `xtabs()` means crosstab totals by habitat and color
+```
+
+run the chi-squared test
+```{r}
+chisq.test(lady_mat)
+# use `chisq.test()` on the lady_mat matrix
+
+lady_chi <- chisq.test(lady_mat)
+names(lady_chi)
+lady_chi$expected
+# returns the expected values
+```
+
+
+
+T-TEST:
+```{r}
+ozone <- read.csv(here("data", "ozone.csv"))
+# import the data frame
+
+glimpse(ozone)
+# look at structure of the DF
+
+ozone$Garden.location <- as.factor(ozone$Garden.location)
+ozone$Garden.ID <- as.factor(ozone$Garden.ID)
+# turn character variables into factors
+```
+
+Plot the data as a histogram
+```{r}
+ggplot(ozone, aes(x = Ozone)) +
+geom_histogram(binwidth = 10) +
+facet_wrap(~ Garden.location, ncol = 1) +
+theme_bw()
+# stacking the graphs can help us see the difference between the means
+```
+
+Complete a t-test
+```{r}
+t.test(Ozone ~ Garden.location, data = ozone)
+# shows the tscore, degrees of freedom, p-value < .05, mean in East is 77.34 and mean in west is 61.26
+```
+
+complete a variance test using var.test()
+```{r}
+var.test(Ozone ~ Garden.location, data = ozone)
+# not necessary when running the welch version
+```
+
