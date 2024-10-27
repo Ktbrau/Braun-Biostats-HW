@@ -5,6 +5,7 @@ editor: visual
 ---
 
 Trying a chi-square contingency analysis:
+
 ```{r}
 rm(list = ls())
 # clear the environment
@@ -21,6 +22,7 @@ glimpse(lady)
 ```
 
 convert character variables to factors
+
 ```{r}
 lady$Habitat <- as.factor(lady$Habitat)
 lady$Site <- as.factor(lady$Site)
@@ -28,6 +30,7 @@ lady$colour <- as.factor(lady$colour)
 ```
 
 Calculate total number of ladybirds based on color and habitat
+
 ```{r}
 totals <- lady |>
   group_by(Habitat, colour) |>
@@ -36,6 +39,7 @@ totals <- lady |>
 ```
 
 create a bar chart using the totals
+
 ```{r}
 ggplot(totals, aes(x = Habitat, y = total_number, fill = colour)) +
   geom_bar(stat = 'identity', position = 'dodge')
@@ -43,6 +47,7 @@ ggplot(totals, aes(x = Habitat, y = total_number, fill = colour)) +
 ```
 
 Recreate the above graph with better colors
+
 ```{r}
 ggplot(totals, aes(x = Habitat, y = total_number,
 fill = colour)) +
@@ -52,6 +57,7 @@ scale_fill_manual(values = c(black = "black", red = "red"))
 ```
 
 Turn the columns into a matrix with color and habitat
+
 ```{r}
 lady_mat <- xtabs(number ~ Habitat + colour,
 data = lady) 
@@ -59,6 +65,7 @@ data = lady)
 ```
 
 run the chi-squared test
+
 ```{r}
 chisq.test(lady_mat)
 # use `chisq.test()` on the lady_mat matrix
@@ -69,9 +76,8 @@ lady_chi$expected
 # returns the expected values
 ```
 
-
-
 T-TEST:
+
 ```{r}
 ozone <- read.csv(here("data", "ozone.csv"))
 # import the data frame
@@ -85,6 +91,7 @@ ozone$Garden.ID <- as.factor(ozone$Garden.ID)
 ```
 
 Plot the data as a histogram
+
 ```{r}
 ggplot(ozone, aes(x = Ozone)) +
 geom_histogram(binwidth = 10) +
@@ -94,14 +101,15 @@ theme_bw()
 ```
 
 Complete a t-test
+
 ```{r}
 t.test(Ozone ~ Garden.location, data = ozone)
 # shows the tscore, degrees of freedom, p-value < .05, mean in East is 77.34 and mean in west is 61.26
 ```
 
 complete a variance test using var.test()
+
 ```{r}
 var.test(Ozone ~ Garden.location, data = ozone)
 # not necessary when running the welch version
 ```
-
