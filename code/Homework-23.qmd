@@ -7,6 +7,7 @@ editor: visual
 We are looking into linear models which include regression, ANOVA, ANCOVA
 
 Set up:
+
 ```{r}
 rm(list=ls())
 library(tidyverse)
@@ -14,45 +15,49 @@ library(here)
 ```
 
 Import the data set:
+
 ```{r}
 plant_gr <- read.csv(here("data", "plant.growth.rate.csv"))
 ```
 
 Examine the data:
+
 ```{r}
 glimpse(plant_gr)
 ```
 
 Create a scatterplot of the data:
+
 ```{r}
 ggplot(plant_gr, aes(x = soil.moisture.content, y = plant.growth.rate)) +
   geom_point() + ylab("Plant Growth Rate (mm/week)") +
 theme_bw()
 ```
+
 The slope is positive which means the more moisture thats in the soil, the higher the plant growth rate is
 
-
 Use `lm()` to fit the model:
+
 ```{r}
 model_pgr <- lm(plant.growth.rate ~ soil.moisture.content, data = plant_gr) # using plant growth rate as a function of soil moisture content
 ```
 
-
 Use autoplot function to plot the linear model:
+
 ```{r}
 library(ggfortify)
 autoplot(model_pgr, smooth.color = NA)
 ```
-1) the top left graph tells us if there is a line that fits the data
 
-2) the top right tells us that the residuals as dots and the expectation when conditions are normal
+1)  the top left graph tells us if there is a line that fits the data
 
-3) the bottom left tells shows us what the assumption of equal variance looks like. See if theres a pattern.
+2)  the top right tells us that the residuals as dots and the expectation when conditions are normal
 
-4) the bottom right tells us that shows influential points and outliers
+3)  the bottom left tells shows us what the assumption of equal variance looks like. See if theres a pattern.
+
+4)  the bottom right tells us that shows influential points and outliers
 
 The `smooth.color = NA` removes a line that is fitted based on locally weighted regression because it typically does not look at the data points
-
 
 `anova()` does not perform the ANOVA test that compares means
 
@@ -61,14 +66,17 @@ The `smooth.color = NA` removes a line that is fitted based on locally weighted 
 ```{r}
 anova(model_pgr)
 ```
+
 shows us a large F value and a tiny p value. If we run it again and get similar values we can be pretty confident that the pattern is correct
 
 ```{r}
 summary(model_pgr)
 ```
+
 the slope is associated with the explanatory variable
 
 create a graph using our model
+
 ```{r}
 ggplot(plant_gr, aes(x = soil.moisture.content,
 y = plant.growth.rate)) +
@@ -79,5 +87,3 @@ theme_bw()
 ```
 
 `geom_smooth()` adds a fitted line to the graph with teh error appearing as a gray background
-
-
