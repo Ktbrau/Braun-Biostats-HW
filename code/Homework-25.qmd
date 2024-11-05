@@ -5,6 +5,7 @@ editor: visual
 ---
 
 Set up qmd
+
 ```{r}
 rm(list=ls())
 library(tidyverse)
@@ -13,6 +14,7 @@ library(ggfortify)
 ```
 
 import and look at the data
+
 ```{r}
 daphnia <- read.csv(here("data", "Daphniagrowth.csv"))
 
@@ -20,12 +22,13 @@ glimpse(daphnia)
 ```
 
 turn parasite into a factor
+
 ```{r}
 daphnia$parasite <- as.factor(daphnia$parasite)
 ```
 
-
 create an initial graph of the data
+
 ```{r}
 ggplot(daphnia, aes(x = parasite, y = growth.rate)) +
 geom_boxplot() +
@@ -36,30 +39,35 @@ geom_boxplot() +
 We can see that the growth rates vary between the treatments, control has the highest growth rate, and there is likely an ordering in the treatments.
 
 construct a linear model:
+
 ```{r}
 model_grow <- lm(growth.rate ~ parasite, data = daphnia)
 ```
 
 evaluate the data using `autoplot()`
+
 ```{r}
 autoplot(model_grow, smooth.colour=NA)
 ```
+
 All of figures suggest that everything is okay.
 
-
 implement the anova test
+
 ```{r}
 anova(model_grow)
 ```
+
 Our F value is large because there is such a big difference between the largest and smallest treatments. This also results in a smaller p-value. This means we can reject the null hypothesis.
 
-
 Check the summary table
+
 ```{r}
 summary(model_grow)
 ```
 
 Another way to show the means for each treatment level:
+
 ```{r}
 sumDat <- daphnia |> 
   group_by(parasite) |> 
@@ -68,9 +76,9 @@ sumDat
 ```
 
 Create a new graph
+
 ```{r}
 ggplot(daphnia, aes(x = growth.rate, y = parasite)) +
   geom_point(alpha = .3, aes(color=parasite), size =4) +
   geom_point(data = sumDat, aes(meanGR, parasite, color=parasite), shape = "diamond", size = 8)
 ```
-

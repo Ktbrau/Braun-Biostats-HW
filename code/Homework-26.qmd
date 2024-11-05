@@ -1,0 +1,60 @@
+---
+title: "Homework-26"
+format: html
+editor: visual
+---
+
+Set up:
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+library(ggfortify)
+library(multcomp)
+```
+
+Import data set:
+```{r}
+pea <- read.csv(here("data", "s_r_pea_sections.csv"))
+```
+
+Convert Treatment from a character to a factor variable:
+```{r}
+pea$Treatment <- as.factor(pea$Treatment) 
+```
+
+
+Create a plot:
+```{r}
+ggplot(pea, aes(x=Treatment, y = pea_section_length_ou)) +
+  geom_boxplot() +
+  coord_flip() + # makes treatment types readable
+  geom_point() + # adds points to the boxplot
+  geom_jitter(width = .25) # makes all points visible
+```
+
+initial interpretation:
+Control treatment has the highest mean length and the mix of fructose and glucose has the lowest mean length. 2% glucose, 2% fructose and the mix all appear to have have similar means
+
+
+Make linear model:
+```{r}
+pea_model <- lm(pea_section_length_ou ~ Treatment, data = pea)
+```
+
+
+Test assumptions:
+```{r}
+autoplot(pea_model, smooth.colour = NA)
+```
+Figures suggest that model is okay
+
+
+Conduct a tukey HSD test and interpret results:
+```{r}
+pea_tukey <- glht(pea_model, linfct = mcp(Treatment = "Tukey"))
+summary(pea_tukey) # show results of tukey test
+```
+2% sucrose and the mix have a significant difference in mean pea length. Control and the mix have a significant difference in mean pea length. 2% sucrose and 2% fructose have a significant difference in mean pea length. Control and 2% fructose have a significant difference in mean pea length. 2% sucrose and 2% glucose have a significant difference in mean pea length. Control and 2% glucose have a significant difference in mean pea length. Control and 2% sucrose have a significant difference in mean pea length.
+
+
