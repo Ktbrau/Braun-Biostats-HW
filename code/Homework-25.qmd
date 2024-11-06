@@ -50,6 +50,12 @@ evaluate the data using `autoplot()`
 autoplot(model_grow, smooth.colour=NA)
 ```
 
+2. evaluating assumption of normality, majority fall on the line. Most points should fall on line
+3. Variance
+4. If a point has a lot of sway
+
+
+
 All of figures suggest that everything is okay.
 
 implement the anova test
@@ -59,6 +65,9 @@ anova(model_grow)
 ```
 
 Our F value is large because there is such a big difference between the largest and smallest treatments. This also results in a smaller p-value. This means we can reject the null hypothesis.
+
+F = between group var / within group variance
+provide both DF in interpretation (Table 1, F_3,36 = 32, p << .001)
 
 Check the summary table
 
