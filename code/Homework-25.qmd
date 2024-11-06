@@ -75,6 +75,7 @@ Check the summary table
 summary(model_grow)
 ```
 
+
 Another way to show the means for each treatment level:
 
 ```{r}
