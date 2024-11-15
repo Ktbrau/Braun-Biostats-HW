@@ -72,3 +72,8 @@ summary(pea_tukey) # show results of tukey test
 ```
 
 2% sucrose and the mix have a significant difference in mean pea length. Control and the mix have a significant difference in mean pea length. 2% sucrose and 2% fructose have a significant difference in mean pea length. Control and 2% fructose have a significant difference in mean pea length. 2% sucrose and 2% glucose have a significant difference in mean pea length. Control and 2% glucose have a significant difference in mean pea length. Control and 2% sucrose have a significant difference in mean pea length.
+
+```{r}
+cld(pea_tukey)
+```
+
