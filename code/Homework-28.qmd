@@ -4,3 +4,107 @@ format: html
 editor: visual
 ---
 
+In this file, I will be going over different graphing techniques
+
+Import the data and packages
+```{r}
+library(tidyverse)
+library(here)
+library(gridExtra)
+
+compensation <- read.csv(here("data", "compensation.csv" ))
+```
+
+Create a basic scatterplot and box and whisker plot
+```{r}
+eg_scatter <- ggplot(data = compensation, aes(x=Grazing, y= Fruit)) +
+  geom_point() # assigns scatterplot to eg_scatter
+
+
+eg_box <- ggplot(data = compensation, aes(x=Grazing,y=Fruit)) +
+  geom_boxplot() # assigns boxplot to eg_box
+```
+
+add a theme to the plot
+```{r}
+eg_scatter+theme_bw()
+```
+
+Place both plots on one page
+```{r}
+grid.arrange(eg_scatter, eg_box, nrow=1)
+```
+
+Use `xlab()` and `ylab()` to adjust axis
+titles
+```{r}
+eg_scatter + xlab("Root Biomass") + ylab("Fruit Production")
+```
+
+Use `ggtitle()` to add a title to the plot but use sparingly
+```{r}
+eg_scatter + ggtitle("My title")
+```
+
+We can combine all of these using `labs()`
+```{r}
+eg_scatter + labs(title="title", x="Root Biomass", y="Fruit Production")
+```
+
+We can change the range of x and y
+```{r}
+eg_scatter + xlim(0,20) + ylim(0,140)
+```
+
+`annotate()` allows you to place text inside the plot
+```{r}
+eg_scatter +
+  annotate("text", x = c(6,8), y=c(105,25),
+           label=c("text up here","text down here")) # specify the location of the text using x and y coords then write message
+```
+
+Adjust the scales
+```{r}
+eg_scatter + scale_x_continuous(limits = c(4,11), breaks= 4:11)
+```
+
+Change colors
+```{r}
+ggplot(data = compensation, aes(x = Root, y = Fruit, colour = Grazing)) +
+geom_point() +
+scale_colour_manual(values = c(Grazed = "brown", Ungrazed =
+"green"))
+```
+
+Adjust background and grids
+```{r}
+eg_scatter +
+theme(
+panel.background = element_rect(fill = NA, colour = "black"),
+panel.grid.minor = element_blank(),
+panel.grid.major = element_line(colour = "lightblue")
+)
+```
+
+adjust color and size of x axis and angle of x axis tick label
+```{r}
+eg_box +
+theme(
+axis.title.x = element_text(colour = "cornflowerblue",
+size =rel(2)),
+axis.text.x = element_text(angle = 45, size = 13, vjust = 0.5))
+```
+
+Change names of levels on our plot
+```{r}
+eg_box + scale_x_discrete(limits = c("Ungrazed", "Grazed"),
+labels = c("Control", "Grazed"))
+```
+
+look at boxes using clean key
+```{r}
+ggplot(compensation, aes(x = Root, y = Fruit, colour = Grazing)) +
+geom_point() +
+theme(legend.key = element_rect(fill = NA))
+```
+
