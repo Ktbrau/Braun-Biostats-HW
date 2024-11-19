@@ -28,7 +28,6 @@ It also looks like the treatment variable is categorical. lets fix it.
 df$Treatment <- as.factor(df$Treatment)
 ```
 
-
 ## Dealing with NA's
 
 For your capstone project, you are working with data sets that, most likely, have NA values. How do we deal with them?
@@ -81,7 +80,6 @@ Use a combination of `sum()`, `complete.cases()` and `head()` to return a numeri
 sum(complete.cases(head(df)))
 ```
 
-
 ```{r}
 sum(complete.cases(head(df)))
 ```
@@ -99,7 +97,6 @@ What if we wanted to know how many rows in the Dried_mass_g column are NOT NA va
 ```{r}
 sum(!is.na(df$Dried_mass_g))
 ```
-
 
 Use the same method to determine the number of rows with NAs in the Growth_rate_mm column and the number of rows without NAs in that column:
 
@@ -146,7 +143,6 @@ See if you can use the same approach to write the code that would return a dataf
 ```{r}
 df_remove_NA_mass <- df[complete.cases(df[,2]), ]
 ```
-
 
 ```{r}
 df_remove_NA_Mass <- df[complete.cases(df[,2]), ]

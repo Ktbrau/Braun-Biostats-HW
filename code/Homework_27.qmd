@@ -167,6 +167,7 @@ Why are there 2 DF for the Treatment effect?
 There are 2 DF because there are 2 treatments that can vary.
 
 Why are there 33 DF for the Residuals?
+
 ```{r}
 sum(!is.na(df_No_NA$Growth_rate_mm))
 ```
@@ -175,7 +176,7 @@ There are 33 DF because there are only 36 points used and you find the residual 
 
 How would you write a results statement?
 
-We do not reject our null hypothesis (p-value > .05). There is no significant difference between control, treatment 1, or treatment 2.
+We do not reject our null hypothesis (p-value \> .05). There is no significant difference between control, treatment 1, or treatment 2.
 
 ```{r}
 summary(grow.mod.no.NA)
@@ -232,12 +233,14 @@ anova(reg_all_model)
 
 Why is there 1 degree of freedom for Growth_rate_mm and why are there 34 degrees of freedom for the Residuals?
 
-There is only 1 degree of freedom because there is only 1 factor that can vary. There are 34 residual DF because there are only 36 points used and you subtract the 2 treatments from 36 to get 34.
+There is only 1 degree of freedom because there is only 1 factor that can vary. There are 34 residual DF because there are only 36 points used and you subtract the 2 treatments from 36 to get 34. 
+There are only 34 variables because only 34 variables are complete in growth rate and dried mass columns.
 
 ```{r}
 summary(reg_all_model)
 ```
-There is a relationship between dried mass and growth rate (p-value < .05)
+
+There is a relationship between dried mass and growth rate (p-value \< .05)
 
 ### Second attempt: Limited data set with only complete cases (use `df_No_NA`)
 
